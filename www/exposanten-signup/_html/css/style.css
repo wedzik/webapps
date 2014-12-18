@@ -1,0 +1,406 @@
+body  {
+background: #F8F8F8;
+margin: 0;
+font-family: Arial, Helvetica, Sans-Serif;
+}
+
+#container { 
+width: 1000px;
+margin: 0 auto;
+background: #FFFFFF;
+display: block;
+}
+
+#header { 
+padding: 45px 0 20px 40px;
+} 
+
+#header a {
+color: #121212;
+text-decoration: none;
+font-size: 30px; 
+}
+
+#menu {
+background-color: #3b7687; 
+padding: 6px 0 6px 40px;
+}
+
+#menu a {
+color: #c5d6db;
+text-decoration: none; 
+font-size: 14px; 
+}
+
+#menu a:hover {
+color: #ecf2f3;
+}
+
+#sidebar {
+float: left;
+width: 120px;
+padding: 30px 0 0 40px;
+margin: 0;
+}
+
+h1 {
+margin: 0px;
+color: #869843; 
+font-size:24px; 
+font-family: "Arial Narrow", "Myriad Pro"; 
+font-weight: normal;
+}
+
+h2 {
+color: #3b7687;
+font-size: 15px; 
+margin: 20px 0 5px 0;
+}
+
+#main { 
+margin: 0px;
+padding: 5px 0px;
+font-size: 13px;
+line-height: 18px;
+text-align: justify;
+    min-height: 500px;
+}
+
+#main a {
+color: #3b7687; 
+text-decoration: none;
+}
+
+#main a:hover {
+color: #444444;
+}
+
+#footer {
+    float: left;
+    width: 100%;
+padding: 6px 0px;
+background: #d6d6d6; 
+font-family: "Lucida Sans Unicode";
+color: #444444;
+font-size: 11px;
+text-align: right;
+}
+
+#footer a {
+text-decoration: none; 
+color: #262626;
+}
+
+#footer a:hover {
+color: #666666;
+}
+
+.separator {
+font-size:11px;
+color:#FFFFFF;
+}
+
+input {
+    font-family: 'Lucida Grande', Tahoma, Verdana, sans-serif;
+    font-size: 14px;
+}
+
+input[type=text], input[type=password]{
+    display: block;
+    margin: 3px;
+    font-size: 12px;
+    padding: 0 5px;
+    width: 550px;
+    height: 25px;
+    color: #404040;
+    background: white;
+    border: 1px solid;
+    border-color: #c4c4c4 #d1d1d1 #d4d4d4;
+    border-radius: 2px;
+    /*outline: 5px solid #eff4f7;*/
+    -moz-outline-radius: 3px;
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+    float: left;
+}
+
+select {
+    width: 562px;
+    height: auto;
+    display: block;
+    margin: 3px;
+    font-size: 14px;
+    padding: 0 2px;
+    width: 550px;
+    color: #404040;
+    background: white;
+    border: 1px solid;
+    border-color: #c4c4c4 #d1d1d1 #d4d4d4;
+    border-radius: 2px;
+        -moz-outline-radius: 3px;
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+    float: left;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+    border-color: #7dc9e2;
+    outline-color: #dceefc;
+    outline-offset: 0;
+}
+
+input[type=submit]{
+    padding: 0 38px;
+    height: 25px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #527881;
+    text-shadow: 0 1px #e3f1f1;
+    background: #cde5ef;
+    border: 1px solid;
+    border-color: #b4ccce #b3c0c8 #9eb9c2;
+    border-radius: 16px;
+    outline: 0;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    background-image: -webkit-linear-gradient(top, #edf5f8, #cde5ef);
+    background-image: -moz-linear-gradient(top, #edf5f8, #cde5ef);
+    background-image: -o-linear-gradient(top, #edf5f8, #cde5ef);
+    background-image: linear-gradient(to bottom, #edf5f8, #cde5ef);
+    -webkit-box-shadow: inset 0 1px white, 0 1px 2px rgba(0, 0, 0, 0.15);
+    box-shadow: inset 0 1px white, 0 1px 2px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    margin: 3px;
+}
+
+.member-table .link_button{
+    padding: 3px 8px;
+    line-height: 34px;
+    font-size: 14px;
+    color: #527881;
+    text-shadow: 0 1px #e3f1f1;
+    background: #cde5ef;
+    border: 1px solid;
+    border-color: #b4ccce #b3c0c8 #9eb9c2;
+    border-radius: 16px;
+    outline: 0;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    background-image: -webkit-linear-gradient(top, #edf5f8, #cde5ef);
+    background-image: -moz-linear-gradient(top, #edf5f8, #cde5ef);
+    background-image: -o-linear-gradient(top, #edf5f8, #cde5ef);
+    background-image: linear-gradient(to bottom, #edf5f8, #cde5ef);
+    -webkit-box-shadow: inset 0 1px white, 0 1px 2px rgba(0, 0, 0, 0.15);
+    box-shadow: inset 0 1px white, 0 1px 2px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    margin: 0px 3px;
+}
+
+
+.member-table .cancel_button{
+    background: #efd7cd;
+}
+
+.member-table .invoice_button{
+    background: #D4EFCD;
+}
+
+input[type=button]{
+    padding: 0 38px;
+    height: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #527881;
+    text-shadow: 0 1px #e3f1f1;
+    background: #efd7cd;
+    border: 1px solid;
+    border-color: #b4ccce #b3c0c8 #9eb9c2;
+    border-radius: 16px;
+    outline: 0;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    *background-image: -webkit-linear-gradient(top, #f8f0ed, #efd7cd);
+    background-image: -moz-linear-gradient(top, #f8f0ed, #efd7cd);
+    background-image: -o-linear-gradient(top, #f8f0ed, #efd7cd);
+    background-image: linear-gradient(to bottom, #f8f0ed, #efd7cd);
+    -webkit-box-shadow: inset 0 1px white, 0 1px 2px rgba(0, 0, 0, 0.15);
+    box-shadow: inset 0 1px white, 0 1px 2px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+}
+
+input[type=submit]:active {
+    background: #cde5ef;
+    border-color: #9eb9c2 #b3c0c8 #b4ccce;
+    -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
+}
+
+.lt-ie9 input[type=text], .lt-ie9 input[type=password] {
+    line-height: 34px;
+}
+
+label {
+    color: #3b7687;
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+    float: left;
+    line-height: 25px;
+    min-width: 170px;
+    margin: 3px;
+    text-align: right;
+}
+
+.member_field_value{
+    color: #333333;
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+    float: left;
+    line-height: 25px;
+    min-width: 170px;
+    margin: 3px;
+}
+
+.member_detail{
+    line-height: 31px;
+}
+
+.row {
+    display: inline-block;
+    min-width: 950px;
+}
+
+.form-holder{
+    display: block;
+    float: left;
+}
+
+#main fieldset{
+    border: 1px solid #E0E0E0;
+    border-radius: 5px;
+    width: 960px;
+    margin: 6px;
+}
+
+#main .fieldset2{
+    width: 400px;
+    float: left;
+}
+
+.fieldset2 legend{
+    color: #3b7687;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 25px;
+}
+
+.fieldset2 textarea{
+    width: 428px;
+    float: left;
+}
+
+textarea {
+    display: block;
+    margin: 3px;
+    font-size: 13px;
+    padding: 0 5px;
+    width: 550px;
+    height: 65px;
+    color: #404040;
+    background: #FFFFE5;
+    border: 1px solid;
+    border-color: #c4c4c4 #d1d1d1 #d4d4d4;
+    border-radius: 2px;
+    /*outline: 5px solid #eff4f7;*/
+    -moz-outline-radius: 3px;
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+    float: left;
+}
+
+.listbox-check-values{
+    height: 150px;
+    background: white;
+}
+
+.message-ok{
+    background-color: #E0F5D6;
+}
+
+.message-error{
+    background-color: #FFCCCC;
+}
+
+.member-table{
+    width: 100%;
+    border-spacing: 0;
+    background-color: #F2F2F2;
+}
+
+.member-table thead td{
+    font-weight: bold;
+    background-color: #E6F2F4;
+}
+
+.member-table td{
+    border: 1px solid #E0E0E0;
+    padding: 5px;
+    vertical-align: top;
+    text-align: left;
+}
+
+.member-form-content{
+    display: block;
+    float: left;
+    margin: 40px 10px 10px 10px;
+    text-align: left;
+}
+.member-form-content .form_filds_container{
+    display: block;
+    float: left;
+    width: 100%;
+    font-size: 12px;
+}
+
+.member-form-content fieldset{
+    width: auto;
+}
+
+.member-form-content .form_filds_container label{
+    margin: 0px;
+    min-width: 200px;
+    font-size: 13px;
+    line-height: 18px;
+}
+.member-form-content .field_value{
+    display: block;
+    float: left;
+    margin-left: 10px;
+
+}
+
+.member-table .open_row_top,
+.member-table .open_row_top:hover{
+    background-color: #ffffff;
+    cursor:  default;
+}
+.member-table .open_row_down td{
+    background-color: #ffffff;
+    cursor: default;
+}
+
+
+.member-table tbody tr:hover{
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
+
+#main .member_detail fieldset{
+    width: 440px;
+    float: right;
+}
