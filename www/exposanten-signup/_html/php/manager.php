@@ -1,4 +1,6 @@
 <?php
+require_once INCLUDE_LIBS_PATCH."mailer_lib/mailer_lib.php";
+
 class Event {
     public $fileName;
     public $name = "";
@@ -44,9 +46,11 @@ class Event {
     public function update() {
         try {
             $this->name = strip_tags($_POST[XML_KEY_NAME]);
-            $this->when = strip_tags($_POST[XML_KEY_WHEN]);
+            $this->when = trim(strip_tags($_POST[XML_KEY_WHEN]));
+            $this->when = preg_replace( "#\s*?\r?\n\s*?(?=\r\n|\n)#s" , "", $this->when);
             $this->when_note = strip_tags($_POST[XML_KEY_WHEN_NOTE]);
-            $this->what = strip_tags($_POST[XML_KEY_WHAT]);
+            $this->what = trim(strip_tags($_POST[XML_KEY_WHAT]));
+            $this->what = preg_replace( "#\s*?\r?\n\s*?(?=\r\n|\n)#s" , "", $this->what);
             $this->what_note = strip_tags($_POST[XML_KEY_WHAT_NOTE]);
             $this->confirmation_text = strip_tags($_POST[XML_KEY_CONFIRMATION_TEXT]);
             $this->accept_email_subject = strip_tags($_POST[XML_KEY_ACCEPT_EMAIL_SUBJECT]);
@@ -121,6 +125,7 @@ class Member {
             $rep_sym = array ("'");
             $field = str_replace( $rep_sym, '', $field);
             $field = str_replace( CSV_DELIMITER, '', $field);
+            unset($_POST[$filed_name]);
             return true;
         } else {
             return false;
@@ -137,6 +142,7 @@ class Member {
                 $rep_sym = array ("'");
                 $field = str_replace( $rep_sym, '', $field);
             }
+            unset($_POST[$filed_name]);
             return true;
         } else {
             return false;
@@ -226,7 +232,13 @@ class Member {
             LABEL_INDUSTRY . $space . $this->industry . $delimiter .
             LABEL_PRODUCTS . $space . $this->products;
 
-        return mail( ADMIN_EMAIL , EMAIL_SUBJECT_ADMIN_NEW_MEMBER , $message);
+        //return mail( ADMIN_EMAIL , EMAIL_SUBJECT_ADMIN_NEW_MEMBER , $message);
+        $_POST["MAILADRES"] =  ADMIN_EMAIL;
+        $_POST["SUBJECT"] =  EMAIL_SUBJECT_ADMIN_NEW_MEMBER;
+        $_POST["MESSAGE"] =  $message;
+
+        return mailOut("EN", ADMIN_EMAIL, true, ADMIN_EMAIL, false);
+
     }
 }
 
@@ -628,6 +640,7 @@ class Manager {
 
     private function _buildProcessFormStage4($event){
         $member = new Member();
+        unset($_POST["event_form_stage"]);
         if (!$member->processForm() || !$member->saveNewMember()) {
             $this->_buildProcessFormStage3($event);
             return;

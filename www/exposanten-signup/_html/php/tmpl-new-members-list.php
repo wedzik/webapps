@@ -2,7 +2,7 @@
 ?>
 <fieldset>
     <legend><h2><?php echo $event_name; ?></h2></legend>
-    <table class="member-table" id="report">
+    <table class="member-table" id="<?php echo $event_name; ?>_report">
         <thead>
         <tr>
             <td><?php echo LABEL_COMPANY_NAME; ?></td>
@@ -64,7 +64,7 @@
                 </fieldset>
                 <fieldset>
                 <a rel="leanModal" href="#member-accept-window" class="link_button"
-                    onclick=' setMemberFormDetail("<?php echo $member->company_name; ?>",
+                    onclick=' setMemberAcceptFormDetail("<?php echo $member->company_name; ?>",
                         "<?php echo $member->contact_name; ?>",
                         "<?php echo $member->address; ?>","<?php echo $member->phone; ?>",
                         "<?php echo $member->email; ?>","<?php echo $member->website; ?>",
@@ -72,7 +72,16 @@
                         "<?php echo $event->accept_email_subject; ?>",
                         "<?php echo str_replace("\r\n","\\n", $event->accept_email_text); ?>",
                         "<?php echo $when_out; ?>","<?php echo $what_out;?>" );'>Accept</a>
-                <a href="#" class="link_button cancel_button">Reject</a>
+
+                <a rel="leanModal" href="#member-reject-window" class="link_button cancel_button"
+                    onclick=' setMemberRejectFormDetail("<?php echo $member->company_name; ?>",
+                        "<?php echo $member->contact_name; ?>",
+                        "<?php echo $member->address; ?>","<?php echo $member->phone; ?>",
+                        "<?php echo $member->email; ?>","<?php echo $member->website; ?>",
+                        "<?php echo $member->industry; ?>","<?php echo $member->products;?>",
+                        "<?php echo $event->accept_email_subject; ?>",
+                        "<?php echo str_replace("\r\n","\\n", $event->accept_email_text); ?>",
+                        "<?php echo $when_out; ?>","<?php echo $what_out;?>" );'>Reject</a>
                 <a href="#" class="link_button invoice_button">Invoice</a>
                 </fieldset>
                 </div>
@@ -84,22 +93,24 @@
 </fieldset>
     <script type="text/javascript">
         $(document).ready(function(){
-            $("#report tr:odd").addClass("odd");
-            $("#report tr:not(.odd)").hide();
-            $("#report tr:first-child").show();
+            $("#<?php echo $event_name; ?>_report tr:odd").addClass("odd");
+            $("#<?php echo $event_name; ?>_report tr:not(.odd)").hide();
+            $("#<?php echo $event_name; ?>_report tr:first-child").show();
 
-            $("#report tr.odd").click(function(){
-                $("#report tr:not(.odd)").hide();
-                $("#report tr").removeClass('open_row_top')
-                $("#report tr").removeClass('open_row_down')
-                $("#report tr:first-child").show();
-                $(this).next("tr").toggle();
-                $(this).addClass('open_row_top')
-                $(this).next("tr").addClass('open_row_down')
-                $('#member-accept-window').css({'height':($(document).height())+'px'});
+            $("#<?php echo $event_name; ?>_report tr.odd").click(function(){
+            $("#<?php echo $event_name; ?>_report tr:not(.odd)").hide();
+            $("#<?php echo $event_name; ?>_report tr").removeClass('open_row_top')
+            $("#<?php echo $event_name; ?>_report tr").removeClass('open_row_down')
+            $("#<?php echo $event_name; ?>_report tr:first-child").show();
+            $(this).next("tr").toggle();
+            $(this).addClass('open_row_top')
+            $(this).next("tr").addClass('open_row_down')
+            $('#member-accept-window').css({'height':($(document).height())+'px'});
+            $('#member-reject-window').css({'height':($(document).height())+'px'});
             });
         });
     </script>
 <?php
     include_once INCLUDE_SCRIPTS_PATCH."member-accept-form.php";
+    include_once INCLUDE_SCRIPTS_PATCH."member-reject-form.php";
 ?>

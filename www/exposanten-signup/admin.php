@@ -16,6 +16,8 @@ $manager->processAdminPageLogIn();
     <script src="<?php echo INCLUDE_JS_PATCH ?>jquery-ui.min.js" type="text/javascript"></script>
     <script src="<?php echo INCLUDE_JS_PATCH ?>jquery.leanModal.min.js" type="text/javascript"></script>
     <script src="<?php echo INCLUDE_JS_PATCH ?>form-validation.js" type="text/javascript"></script>
+    <script src="<?php echo INCLUDE_JS_PATCH ?>ajax.js" type="text/javascript"></script>
+    <script src="<?php echo INCLUDE_JS_PATCH ?>form-submit.js" type="text/javascript"></script>
     <script type="text/javascript"> $(function() { $('a[rel*=leanModal]').leanModal({top: 0, overlay: 0.01}); }); </script>
 </head>
 <body>
