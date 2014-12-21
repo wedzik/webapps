@@ -86,6 +86,8 @@ class Event {
 
 class Member {
     public $parseOk = true;
+    public $id = "";
+    public $time = 0;
     public $event_name = "";
     public $company_name = "";
     public $contact_name = "";
@@ -102,20 +104,22 @@ class Member {
         if($line == ""){ return; }
         $delimiter = CSV_DELIMITER;
         $values = explode($delimiter, $line);
-        if(count($values) < 10) {
+        if(count($values) < 12) {
             $this->parseOk = false;
             return;
         }
-        $this->company_name = trim($values[0]);
-        $this->contact_name = trim($values[1]);
-        $this->address = trim($values[2]);
-        $this->phone = trim($values[3]);
-        $this->email = trim($values[4]);
-        $this->website = trim($values[5]);
-        $this->industry = trim($values[6]);
-        $this->products = trim($values[7]);
-        $this->when = trim($values[8]);
-        $this->what = trim($values[9]);
+        $this->id = trim($values[0]);
+        $this->time = trim($values[1]);
+        $this->company_name = trim($values[2]);
+        $this->contact_name = trim($values[3]);
+        $this->address = trim($values[4]);
+        $this->phone = trim($values[5]);
+        $this->email = trim($values[6]);
+        $this->website = trim($values[7]);
+        $this->industry = trim($values[8]);
+        $this->products = trim($values[9]);
+        $this->when = trim($values[10]);
+        $this->what = trim($values[11]);
     }
 
     private function _getPostValue($filed_name, &$field){
@@ -199,8 +203,16 @@ class Member {
 
     public function saveNewMember(){
         try {
+            if ($this->id == ""){
+                $this->id = md5($this->email.time());
+            }
+            if ($this->time == 0){
+                $this->time = time();
+            }
             $delimiter = CSV_DELIMITER;
-            $new_record = $this->company_name  . $delimiter . $this->contact_name
+            $new_record = $this->id . $delimiter . $this->time
+                                                . $delimiter . $this->company_name
+                                                . $delimiter . $this->contact_name
                                                 . $delimiter . $this->address
                                                 . $delimiter . $this->phone
                                                 . $delimiter . $this->email
@@ -322,6 +334,19 @@ class Manager {
             include INCLUDE_SCRIPTS_PATCH . "tmpl-new-members-list.php";
         }
         //$this->_loadEventInfo($selected_event_name);
+    }
+
+    public function getMemberByEventAndId($event_name, $id){
+        $file = CONFIG_MEMEBRS_PATCH.$event_name."_".NEW_MEMEBRS_FILE;
+        if(file_exists($file)) {
+            $members = $this->_getMembersFromFile($file);
+            foreach ($members as $member) {
+                if($member->id == $id){
+                    return $member;
+                }
+            }
+        }
+        return false;
     }
 
     private function _getMembersFromFile($file){

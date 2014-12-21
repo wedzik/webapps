@@ -5,7 +5,7 @@
             <a class="close_link" onclick="$('#lean_overlay').fadeOut(200); $('#member-reject-window').fadeOut(200);
                      $('#reject-mail-desk').fadeIn();
                    $('#reject-mail-resp').fadeOut();
-             clearMemberRegectFormDetail();"></a>
+             clearMemberRejectFormDetail();"></a>
         </div>
         <div class="page_layout">
             <div id="member-form-container">
@@ -58,7 +58,7 @@
                     </fieldset>
                     <fieldset>
                         <legend>Email</legend>
-                        <form lang="nl" name="RejectForm"  id="rejectForm"  action="./email_form.php"
+                        <form lang="nl" name="RejectForm"  id="RejectForm"  action="./email_form.php"
                               onsubmit=" return domSubmit(this, 'RejectForm');" method="post" enctype="multipart/form-data">
                             <div class="row">
                                 <label>Email</label>
@@ -104,7 +104,7 @@
     </div>
 </div>
 <script language="JavaScript">
-    var RejectFormObj = new DHTMLSuite.form({formRef: 'AcceptForm', action: './mail_form.php', responseEl: 'accept-mail-resp-text'});
+    var RejectFormObj = new DHTMLSuite.form({formRef: 'RejectForm', action: './mail_form.php', responseEl: 'reject-mail-resp-text'});
 
     $("#GoBackRejectFormButton").click(function() {
         $('#reject-mail-resp').fadeOut(1);
@@ -118,7 +118,7 @@
         });
     });
 
-        function setMemberRegectFormDetail($company_name, $contact_name, $address, $phone, $email, $website, $industry, $products,
+        function setMemberRejectFormDetail($company_name, $contact_name, $address, $phone, $email, $website, $industry, $products,
                                  $email_subject, $email_message, $when, $what) {
         $('#member-reject-form-company-name').html($company_name);
         $('#member-reject-form-contact-name').html($contact_name);
@@ -134,7 +134,7 @@
         $('#member-reject-form-when').html($when);
         $('#member-reject-form-what').html($what);
     }
-    function clearMemberRegectFormDetail() {
+    function clearMemberRejectFormDetail() {
         $('#member-reject-form-company-name').html("");
         $('#member-reject-form-contact-name').html("");
         $('#member-reject-form-address').html("");
