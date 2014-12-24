@@ -1,5 +1,5 @@
 <fieldset>
-    <legend><h2>Event detail</h2></legend>
+    <legend><h2>Trade show detail</h2></legend>
 <form name="event-form" method="post">
     <input type="hidden"  name="event_edit_name" value="<?php echo basename($event->fileName, ".xml"); ?>"/>
     <div class="row">

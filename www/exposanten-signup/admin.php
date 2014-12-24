@@ -26,9 +26,12 @@ $manager->processAdminPageLogIn();
             include_once INCLUDE_SCRIPTS_PATCH."login-form.php";
         } else { ?>
     <div id="container">
-        <div id="menu">
-            <a href="admin.php">Trade show</a> &nbsp; &nbsp; &nbsp; &nbsp;
-            <a href="admin.php?members=1">New Exposants</a> &nbsp; &nbsp; &nbsp; &nbsp;
+        <div id="menu" class="main-menu">
+            <a href="admin.php" class="active">Event Setup</a>
+            <a href="admin.php?members=1" id="menu-<?php echo NEW_MEMBERS_FILE; ?>" >New Exposants</a>
+            <a href="admin.php?members=2" id="menu-<?php echo ACCEPT_MEMBERS_FILE; ?>">Accepted Exposants</a>
+            <a href="admin.php?members=3" id="menu-<?php echo REJECT_MEMBERS_FILE; ?>">Rejected Exposants</a>
+            <a href="admin.php?members=4" id="menu-<?php echo INVOICE_MEMBERS_FILE; ?>">Invoice Exposants</a>
         </div>
         <div id="main">
             <?php $manager->handleAdminFormRequest(); ?>

@@ -1,9 +1,13 @@
 <?php
+session_start();
 require_once dirname(__FILE__)."/config.php";
 include_once INCLUDE_SCRIPTS_PATCH . "manager.php";
-//require_once INCLUDE_LIBS_PATCH . "ETcPdf_lib/ETcPdf.php";
 require_once INCLUDE_LIBS_PATCH . "Barcode39/Barcode39.php";
 require_once INCLUDE_LIBS_PATCH . "MPDF57/mpdf.php";
+$manager->processAdminPageLogIn();
+if(!$manager->haveAcess){
+    header("Location: http://".$_SERVER['HTTP_HOST'].MAIN_ROOT_DIR."/admin.php");
+}
 
 class pdfIvoice {
     public $pdf;
@@ -50,7 +54,7 @@ class pdfIvoice {
     .header-info-table{
         display: block;
         float: left;
-        padding-top: 180px;
+        padding-top: 0px;
         padding-left: 25px;
         width: 100%;
     }
@@ -126,7 +130,12 @@ class pdfIvoice {
         border: 0px;
     }
 </style>
-<table class="header-info-table" cellspacing="0" border="0" border="1">
+<table class="header-info-table" cellspacing="0" border="0" border="0">
+    <tr>
+        <td colspan="3">
+            <?php echo ORDER_HEADER; ?></b>
+        </td>
+    </tr>
     <tr>
         <td rowspan="2" style="width: 50%">
             <b> <?php echo $this->_company. "<br/>".$this->_name . "<br/>".$this->_address; ?></b>
@@ -171,8 +180,8 @@ class pdfIvoice {
                 <tr class="item-row">
                     <td style="text-align: left;"><?php echo $this->_item; ?></td>
                     <td><?php echo number_format(1,2); ?></td>
-                    <td><?php echo number_format(0,2); ?></td>
-                    <td class="last-cell"><?php echo number_format(0,2); ?></td>
+                    <td><?php echo number_format($this->_moneyAmount,2); ?></td>
+                    <td class="last-cell"><?php echo number_format($this->_moneyAmount,2); ?></td>
                 </tr>
     <tr class="item-row">
         <td><br/></td> <td></td> <td></td> <td class="last-cell"></td>
@@ -198,11 +207,11 @@ class pdfIvoice {
     </tr>
 
     <tr class="item-row-summary">
-        <td colspan="2" rowspan="2" style="font-weight:normal;  padding-left: 15px; text-align: left; border: 0px; font-size: 12px;">
+        <td colspan="2" rowspan="2" style="font-weight:normal;  padding-left: 5px; text-align: left; border: 0px; font-size: 12px;">
             <?php echo ORDER_FOOTER; ?>
         </td>
         <td>Totaal</td>
-        <td class="last-cell gray-text">&euro;<?php echo number_format($this->Total, 2); ?></td>
+        <td class="last-cell gray-text">&euro;<?php echo number_format($this->_total, 2); ?></td>
     </tr>
     <tr class="item-row-summary-2">
         <td><br/></td>
@@ -221,7 +230,6 @@ class pdfIvoice {
     }
 
     public function printPdf($member, $out_to_browser = false ){
-        //$member = new Member();
         $this->_order_number = $member->id;
         $this->_date = date('d-m-Y', $member->time);
         $this->_company = $member->company_names;
@@ -233,44 +241,56 @@ class pdfIvoice {
         $this->_item = $member->when."<br/>".$member->what;
         $this->_item = str_replace("|" ,"<br/>",$this->_item );
 
-            /*
-                    public $parseOk = true;
-                    public $id = "";
-                    public $event_name = "";
-                    public $company_name = "";
-                    public $contact_name = "";
-                    public $address = "";
-                    public $phone = "";
-                    public $email = "";
-                    public $website = "";
-                    public $industry = "";
-                    public $products = "";
-                    public $when = "";
-                    public $what = "";
+        $when_vals = explode("|", $member->when);
+        $when_count = 0;
+        foreach($when_vals as  $when_val){
+            if(strlen(trim($when_val)) > 0) {
+                $when_count++;
+            }
+        }
 
-            */
-  /*
-        $this->moneyAmount = $this->Total - $this->Total*$this->btw_value;
-        $this->moneyBTWAmount = $this->Total*$this->btw_value;
+        $what_vals = explode("|", $member->what);
+        $what_sum = " ";
+        try {
+            foreach($what_vals as  $what_val){
+                if(strlen(trim($what_val)) > 0) {
+                    $euro_pos = strpos($what_val, EURO_PARSE_KEY);
+                    $tmp = substr($what_val, $euro_pos+4);
+                    $tmp = substr($tmp, 0, strpos($tmp," "));
+                    $money_val = floatval($tmp);
+                    $what_sum += $money_val;
+                }
+            }
+        } catch (Exception $e) {
+            $what_sum = 0;
+        }
 
-        $this->_order_number = $shopManager->transaction->transaction_key;
-        $this->_date = date("M j, Y", time());
-*/
+        $this->_item .= " ".$when_count." ".$what_sum;
+        $this->_moneyAmount = $when_count * $what_sum;
+        $this->_moneyBTWAmount = $this->_moneyAmount*BTW_VALUE;
+        $this->btw_value = BTW_VALUE;
+        $this->_total = $this->_moneyAmount+$this->_moneyBTWAmount;
         $fileName = "ORDER_$member->id.pdf";
-        //'ORDER_'.$shopManager->transaction->transaction_key.'.pdf';
+
         $this->pdfOut();
         if ($out_to_browser)
             $this->pdf->Output($fileName, 'I');
-        else
-            $this->pdf->Output(SAVED_ORDERS_PATCH.$fileName, 'F');
+        else {
+            if (!is_dir(ORDERS_PATCH)) { mkdir(ORDERS_PATCH); }
+            $this->pdf->Output(ORDERS_PATCH . $fileName, 'F');
+        }
         return $fileName;
     }
 }
 
 //$manager->printPdfInvoice($event_name, $id)
-$member = $manager->getMemberByEventAndId("test1", "f6b165b8b4d5c7c368919c89f202e2c0");
-if($member !== false){
-    $invoice = new pdfIvoice();
-    $invoice->printPdf($member, true);
+if (isset($_GET["eid"]) && isset($_GET["uid"])&& isset($_GET["fid"])) {
+    $file_sufix = str_replace($_GET['eid']."_","",$_GET['fid']);
+    $member = $manager->getMemberByEventAndId($_GET["eid"], $_GET["uid"], $file_sufix);
+    //$member = $manager->getMemberByEventAndId("test1", "y5PKEDDiCXzR");
+    if ($member !== false) {
+        $invoice = new pdfIvoice();
+        $invoice->printPdf($member, true);
+    }
 }
 ?>

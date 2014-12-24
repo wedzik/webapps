@@ -13,13 +13,13 @@
         </thead>
         <tbody>
     <?php  foreach($members as $member){ ?>
-        <tr>
+        <tr class="<?php echo $member->id; ?>">
             <td><?php echo $member->company_name; ?></td>
             <td><?php echo $member->contact_name; ?></td>
             <td><?php echo $member->email; ?></td>
             <td><?php echo $member->phone; ?></td>
         </tr>
-        <tr>
+        <tr class="<?php echo $member->id; ?>">
             <td colspan="4" class="member_detail">
                 <fieldset style="float: left">
                 <label class="form_label"><?php echo LABEL_COMPANY_NAME; ?></label>
@@ -70,7 +70,9 @@
                                 "<?php echo $member->website; ?>", "<?php echo $member->industry; ?>",
                                 "<?php echo $member->products;?>", "<?php echo $event->accept_email_subject; ?>",
                                 "<?php echo str_replace("\r\n","\\n", $event->accept_email_text); ?>",
-                                "<?php echo $when_out; ?>","<?php echo $what_out;?>" );'>Accept</a>
+                                "<?php echo $when_out; ?>","<?php echo $what_out;?>",
+                                "<?php echo $member->event_name; ?>","<?php echo $member->id;?>",
+                                "<?php echo $member->fileName;?>");'>Accept</a>
 
                         <a rel="leanModal" href="#member-reject-window" class="link_button cancel_button"
                             onclick=' setMemberRejectFormDetail("<?php echo $member->company_name; ?>",
@@ -79,16 +81,22 @@
                                 "<?php echo $member->website; ?>", "<?php echo $member->industry; ?>",
                                 "<?php echo $member->products;?>", "<?php echo $event->reject_email_subject; ?>",
                                 "<?php echo str_replace("\r\n","\\n", $event->reject_email_text); ?>",
-                                "<?php echo $when_out; ?>","<?php echo $what_out;?>" );'>Reject</a>
+                                "<?php echo $when_out; ?>","<?php echo $what_out;?>",
+                                "<?php echo $member->event_name; ?>","<?php echo $member->id;?>",
+                                "<?php echo $member->fileName;?>" );'>Reject</a>
 
                         <a rel="leanModal" href="#member-invoice-window" class="link_button invoice_button"
                             onclick=' setMemberInvoiceFormDetail("<?php echo $member->company_name; ?>",
                                 "<?php echo $member->contact_name; ?>", "<?php echo $member->address; ?>",
                                 "<?php echo $member->phone; ?>", "<?php echo $member->email; ?>",
                                 "<?php echo $member->website; ?>", "<?php echo $member->industry; ?>",
-                                "<?php echo $member->products;?>", "<?php echo $event->reject_email_subject; ?>",
-                                "<?php echo str_replace("\r\n","\\n", $event->reject_email_text); ?>",
-                                "<?php echo $when_out; ?>","<?php echo $what_out;?>" );'>Invoice</a>
+                                "<?php echo $member->products;?>", "<?php echo $event->invoice_email_subject; ?>",
+                                "<?php echo str_replace("\r\n","\\n", $event->invoice_email_text); ?>",
+                                "<?php echo $when_out; ?>","<?php echo $what_out;?>",
+                                "<?php echo $member->event_name; ?>","<?php echo $member->id;?>",
+                                "<?php echo $member->fileName;?>"  );'>Invoice</a>
+
+<!--                        <a href="./view-pdf.php?eid=<?php echo $member->event_name; ?>&uid=<?php echo $member->id; ?>" class="link_button invoice_button" target="_blank">Show Invoice</a>-->
                     </fieldset>
                 </div>
             </td>
@@ -99,6 +107,8 @@
 </fieldset>
     <script type="text/javascript">
         $(document).ready(function(){
+            $("#menu a").removeClass('active')
+            $("#menu-<?php echo $sufix; ?>").addClass('active')
             $("#<?php echo $event_name; ?>_report tr:odd").addClass("odd");
             $("#<?php echo $event_name; ?>_report tr:not(.odd)").hide();
             $("#<?php echo $event_name; ?>_report tr:first-child").show();

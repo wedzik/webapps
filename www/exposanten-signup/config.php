@@ -9,11 +9,19 @@ define('INCLUDE_CSS_PATCH', 'http://' . $_SERVER['HTTP_HOST'] . MAIN_ROOT_DIR . 
 
 define('INCLUDE_SCRIPTS_PATCH', dirname(__FILE__).'/_html/php/');
 define('INCLUDE_LIBS_PATCH', dirname(__FILE__).'/_html/libs/');
+define('ORDERS_PATCH', dirname(__FILE__).'/_html/orders/');
 define('DATA_PATCH', $_SERVER['DOCUMENT_ROOT'].'/../datadb'.MAIN_ROOT_DIR);
 define('CONFIG_EVENTS_PATCH', DATA_PATCH . '/config/');
 define('CONFIG_MEMEBRS_PATCH', DATA_PATCH . '/members/');
-define('NEW_MEMEBRS_FILE', 'new_members.csv');
+define('MEMBERS_FILE_EXT', '.csv');
+define('NEW_MEMBERS_FILE', 'new_members');
+define('ACCEPT_MEMBERS_FILE', 'accept_members');
+define('REJECT_MEMBERS_FILE', 'reject_members');
+define('INVOICE_MEMBERS_FILE', 'invoice_members');
 define('CSV_DELIMITER', ';');
+define('INVOICE_ID_LEN', 12);
+define('BTW_VALUE', 0.21);
+define('EURO_PARSE_KEY', '€ ');
 
 //define('APPLETS_ROOT_URL', 'http://' . $_SERVER['HTTP_HOST'] . MAIN_ROOT_DIR . '/_html/applets/');
 define('ADMIN_PASSWORD', 'admin');
@@ -69,3 +77,9 @@ define('EMAIL_SUBJECT_ADMIN_NEW_MEMBER', 'New member notification.');
 define('ADMIN_EMAIL', 'wedzikmail@gmail.com');
 
 define('MESSAGE_SELECT_ANY_VALUE', 'Select at least one value');
+
+define('ORDER_HEADER','Lorem ipsum dolor sit amet, consectetuer adipiscing elit,<br/>
+                        sed diam nonummy nibh euismod tincidunt ut laoreet<br/>dolore magna aliquam erat volutpat.');
+define('ORDER_FOOTER','Lorem ipsum dolor sit amet, consectetuer adipiscing elit,<br/>
+                        sed diam nonummy nibh euismod tincidunt ut laoreet<br/>dolore magna aliquam erat volutpat.');
+

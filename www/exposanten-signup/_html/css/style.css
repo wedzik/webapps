@@ -21,17 +21,6 @@ text-decoration: none;
 font-size: 30px; 
 }
 
-#menu {
-background-color: #3b7687; 
-padding: 6px 0 6px 40px;
-}
-
-#menu a {
-color: #c5d6db;
-text-decoration: none; 
-font-size: 14px; 
-}
-
 #menu a:hover {
 color: #ecf2f3;
 }
@@ -206,7 +195,8 @@ input[type=submit],
     background: #efd7cd;
 }
 
-.member-table .invoice_button{
+.member-table .invoice_button,
+#member-invoice-window .invoice_button {
     background: #D4EFCD;
 }
 
@@ -301,7 +291,9 @@ label {
     line-height: 25px;
 }
 
-.fieldset2 textarea{
+.fieldset2 textarea,
+.fieldset2 input[type="text"],
+.fieldset2 select {
     width: 428px;
     float: left;
 }
@@ -421,4 +413,24 @@ textarea {
 
 .member-table .odd {
     color: #5E5E5E;
+}
+
+.main-menu {
+    height: 20px;
+    padding: 3px;
+    background-color: #3b7687;
+}
+
+.main-menu a{
+    display: block;
+    padding: 0px 20px;
+    float: left;
+    color: #c5d6db;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.main-menu a.active{
+    color: #ffffff;
+    font-weight: bold;
 }

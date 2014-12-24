@@ -60,6 +60,10 @@
                         <legend>Email</legend>
                         <form lang="nl" name="RejectForm"  id="RejectForm"  action="./email_form.php"
                               onsubmit=" return domSubmit(this, 'RejectForm');" method="post" enctype="multipart/form-data">
+                            <input  type="hidden" value="" name="eid" id="member-reject-form-eid" />
+                            <input  type="hidden" value="" name="uid" id="member-reject-form-uid" />
+                            <input  type="hidden" value="" name="fid" id="member-reject-form-fid" />
+                            <input  type="hidden" value="<?php echo REJECT_MEMBERS_FILE; ?>" name="action" id="member-reject-form-action" />
                             <div class="row">
                                 <label>Email</label>
                                 <input  type="text" email="true" value="" name="MailAdres*" id="member-reject-form-email-address"/>
@@ -90,7 +94,7 @@
 
                 <div id="reject-mail-resp" style="display: none; text-align: center; "  class="member-form-content">
                     <fieldset>
-                    <div id="reject-mail-resp-text" >
+                    <div id="reject-mail-resp-text"  style="text-align: justify">
                         test content
                         <div class="loading"></div>
                     </div>
@@ -119,7 +123,7 @@
     });
 
         function setMemberRejectFormDetail($company_name, $contact_name, $address, $phone, $email, $website, $industry, $products,
-                                 $email_subject, $email_message, $when, $what) {
+                                           $email_subject, $email_message, $when, $what,  $eid, $uid, $fid) {
         $('#member-reject-form-company-name').html($company_name);
         $('#member-reject-form-contact-name').html($contact_name);
         $('#member-reject-form-address').html($address);
@@ -133,6 +137,9 @@
         $('#member-reject-form-email-message').html($email_message);
         $('#member-reject-form-when').html($when);
         $('#member-reject-form-what').html($what);
+        $('#member-reject-form-eid').val($eid);
+        $('#member-reject-form-uid').val($uid);
+        $('#member-reject-form-fid').val($fid);
     }
     function clearMemberRejectFormDetail() {
         $('#member-reject-form-company-name').html("");
@@ -148,5 +155,11 @@
         $('#member-reject-form-email-message').html("");
         $('#member-reject-form-when').html("");
         $('#member-reject-form-what').html("");
+        $('#member-reject-form-eid').val("");
+        $('#member-reject-form-fid').val("");
+        if ($('#remove-row-'+$('#member-reject-form-uid').val()).val() == 1){
+            $('.'+$('#member-reject-form-uid').val()).hide();
+        }
+        $('#member-reject-form-uid').val("");
     }
 </script>

@@ -99,6 +99,7 @@ class Member {
     public $products = "";
     public $when = "";
     public $what = "";
+    public $fileName ="";
 
     function __construct($line=""){
         if($line == ""){ return; }
@@ -120,6 +121,17 @@ class Member {
         $this->products = trim($values[9]);
         $this->when = trim($values[10]);
         $this->what = trim($values[11]);
+    }
+
+    private function _get_uuid($salt) {
+        $hex = md5($salt . uniqid("", true));
+        $pack = pack('H*', $hex);
+        $tmp =  base64_encode($pack);
+        $uid = preg_replace("#(*UTF8)[^A-Za-z0-9]#", "", $tmp);
+        $len = max(4, min(128, INVOICE_ID_LEN));
+        while (strlen($uid) < INVOICE_ID_LEN)
+            $uid .= gen_uuid(22);
+        return substr($uid, 0, $len);
     }
 
     private function _getPostValue($filed_name, &$field){
@@ -201,10 +213,10 @@ class Member {
         }
     }
 
-    public function saveNewMember(){
+    public function save($fileSufix){
         try {
             if ($this->id == ""){
-                $this->id = md5($this->email.time());
+                $this->id = $this->_get_uuid($this->event_name);
             }
             if ($this->time == 0){
                 $this->time = time();
@@ -222,7 +234,7 @@ class Member {
                                                 . $delimiter . $this->when
                                                 . $delimiter . $this->what;
             if (!is_dir(CONFIG_MEMEBRS_PATCH)) { mkdir(CONFIG_MEMEBRS_PATCH); }
-            $file_name = CONFIG_MEMEBRS_PATCH.$this->event_name."_".NEW_MEMEBRS_FILE;
+            $file_name = CONFIG_MEMEBRS_PATCH.$this->event_name."_".$fileSufix.MEMBERS_FILE_EXT;
             $f = fopen($file_name, 'a+');
             fwrite($f, $new_record . PHP_EOL);
             fclose($f);
@@ -251,6 +263,11 @@ class Member {
 
         return mailOut("EN", ADMIN_EMAIL, true, ADMIN_EMAIL, false);
 
+    }
+
+    public function moveTo($fileSufix) {
+        $this->save($fileSufix);
+        //$destFilename = $this->event_name."_".$fileSufix.MEMBERS_FILE_EXT;
     }
 }
 
@@ -323,23 +340,25 @@ class Manager {
         $this->_loadEventInfo($selected_event_name);
     }
 
-    public function newMembersList(){
-        $files = glob(CONFIG_MEMEBRS_PATCH.'*.csv');
+    public function showMembers($sufix){
+        $files = glob(CONFIG_MEMEBRS_PATCH.'*_'.$sufix.MEMBERS_FILE_EXT);
+        $members = array();
         foreach($files as $file){
             $event_name =  basename($file);
-            $event_name = str_replace("_".NEW_MEMEBRS_FILE,"",$event_name);
+            $event_name = str_replace("_".$sufix.MEMBERS_FILE_EXT,"",$event_name);
             $event = new Event();
             $event->loadFromFile($this->_generateEventFilename($event_name));
-            $members = $this->_getMembersFromFile($file);
-            include INCLUDE_SCRIPTS_PATCH . "tmpl-new-members-list.php";
+            $members = $this->_getMembersFromFile($file, $event);
         }
-        //$this->_loadEventInfo($selected_event_name);
+        include INCLUDE_SCRIPTS_PATCH . "tmpl-new-members-list.php";
     }
 
-    public function getMemberByEventAndId($event_name, $id){
-        $file = CONFIG_MEMEBRS_PATCH.$event_name."_".NEW_MEMEBRS_FILE;
+    public function getMemberByEventAndId($event_name, $id, $file_sufix){
+        $file = CONFIG_MEMEBRS_PATCH.$event_name."_".$file_sufix.MEMBERS_FILE_EXT;//NEW_MEMBERS_FILE;
         if(file_exists($file)) {
-            $members = $this->_getMembersFromFile($file);
+            $event = new Event();
+            $event->loadFromFile($this->_generateEventFilename($event_name));
+            $members = $this->_getMembersFromFile($file, $event);
             foreach ($members as $member) {
                 if($member->id == $id){
                     return $member;
@@ -349,12 +368,15 @@ class Manager {
         return false;
     }
 
-    private function _getMembersFromFile($file){
+    private function _getMembersFromFile($file, $event){
         $members = array();
         $lines = file($file);
         foreach($lines as $line){
             $member = new Member($line);
             if ($member->parseOk) {
+
+                $member->fileName = basename($file,MEMBERS_FILE_EXT);
+                $member->event_name = $event->name;
                 $members[] = $member;
             }
         }
@@ -364,7 +386,15 @@ class Manager {
 
     public function handleAdminFormRequest(){
         if(isset ($_GET["members"])){
-            $this->newMembersList();
+            switch ($_GET["members"]) {
+                case 1 : $this->showMembers(NEW_MEMBERS_FILE); return;
+                case 2 : $this->showMembers(ACCEPT_MEMBERS_FILE); return;
+                case 3 : $this->showMembers(REJECT_MEMBERS_FILE); return;
+                case 4 : $this->showMembers(INVOICE_MEMBERS_FILE); return;
+                default : $this->showMembers(NEW_MEMBERS_FILE);
+
+            }
+
         } elseif(isset ($_POST["new_event_name"])){
             $this->_newEvent($_POST["new_event_name"]);
         }elseif(isset ($_POST["selected_events_name"])) {
@@ -485,7 +515,7 @@ class Manager {
                 }
                 if(domSubmit(this, 'event_form_stage1')) {
                     $("#process-form-content").addClass('process-order-loading');
-                    var url = "./content.php?event_name=<?php echo $event->name; ?>";
+                    var url = "<?php echo MAIN_ROOT_DIR; ?>/content.php?event_name=<?php echo $event->name; ?>";
                     $.ajax({
                         type: "POST", url: url,
                         data: $("#event_form_stage1").serialize(),
@@ -551,7 +581,7 @@ class Manager {
                     return false;
                 }
                 $("#process-form-content").addClass('process-order-loading');
-                var url = "./content.php?event_name=<?php echo $event->name; ?>";
+                var url = "<?php echo MAIN_ROOT_DIR; ?>/content.php?event_name=<?php echo $event->name; ?>";
                 $.ajax({
                     type: "POST", url: url,
                     data: $("#event_form_stage2").serialize(),
@@ -646,7 +676,7 @@ class Manager {
             $("#event_form_stage3").submit(function() {
                 if(($('input[name=event_form_stage]').val()==2) || domSubmit(this, 'event_form_stage3')) {
                     $("#process-form-content").addClass('process-order-loading');
-                    var url = "./content.php?event_name=<?php echo $event->name; ?>";
+                    var url = "<?php echo MAIN_ROOT_DIR; ?>/content.php?event_name=<?php echo $event->name; ?>";
                     $.ajax({
                         type: "POST", url: url,
                         data: $("#event_form_stage3").serialize(),
@@ -666,7 +696,7 @@ class Manager {
     private function _buildProcessFormStage4($event){
         $member = new Member();
         unset($_POST["event_form_stage"]);
-        if (!$member->processForm() || !$member->saveNewMember()) {
+        if (!$member->processForm() || !$member->save(NEW_MEMBERS_FILE)) {
             $this->_buildProcessFormStage3($event);
             return;
         }
@@ -696,7 +726,7 @@ class Manager {
             $("#process-form-content").removeClass('process-order-loading');
             $("#event_form_stage3").submit(function() {
                 $("#process-form-content").addClass('process-order-loading');
-                var url = "./content.php?event_name=<?php echo $event->name; ?>";
+                var url = "<?php echo MAIN_ROOT_DIR; ?>/content.php?event_name=<?php echo $event->name; ?>";
                 $.ajax({
                     type: "POST", url: url,
                     data: $("#event_form_stage3").serialize(),

@@ -58,8 +58,11 @@
                     </fieldset>
                     <fieldset>
                         <legend>Email</legend>
-                        <form lang="nl" name="InvoiceForm"  id="InvoiceForm"  action="./email_form.php"
+                        <form lang="nl" name="InvoiceForm"  id="InvoiceForm"  action="./invoice_form.php"
                               onsubmit=" return domSubmit(this, 'InvoiceForm');" method="post" enctype="multipart/form-data">
+                            <input  type="hidden" value="" name="eid" id="member-invoice-form-eid" />
+                            <input  type="hidden" value="" name="uid" id="member-invoice-form-uid" />
+                            <input  type="hidden" value="" name="fid" id="member-invoice-form-fid" />
                             <div class="row">
                                 <label>Email</label>
                                 <input  type="text" email="true" value="" name="MailAdres*" id="member-invoice-form-email-address"/>
@@ -83,6 +86,7 @@
                                                            $('#invoice-mail-resp').fadeIn();
                                                        }
                                                        ">
+                                <a id="member-show-invoice-link" href="#" class="link_button invoice_button" target="_blank">Show Invoice</a>
                             </div>
                         </form>
                     </fieldset>
@@ -90,7 +94,7 @@
 
                 <div id="invoice-mail-resp" style="display: none; text-align: center; "  class="member-form-content">
                     <fieldset>
-                    <div id="invoice-mail-resp-text" >
+                    <div id="invoice-mail-resp-text" style="text-align: justify">
                         test content
                         <div class="loading"></div>
                     </div>
@@ -104,7 +108,7 @@
     </div>
 </div>
 <script language="JavaScript">
-    var InvoiceFormObj = new DHTMLSuite.form({formRef: 'InvoiceForm', action: './mail_form.php', responseEl: 'invoice-mail-resp-text'});
+    var InvoiceFormObj = new DHTMLSuite.form({formRef: 'InvoiceForm', action: './invoice_form.php', responseEl: 'invoice-mail-resp-text'});
 
     $("#GoBackInvoiceFormButton").click(function() {
         $('#invoice-mail-resp').fadeOut(1);
@@ -119,7 +123,7 @@
     });
 
         function setMemberInvoiceFormDetail($company_name, $contact_name, $address, $phone, $email, $website, $industry, $products,
-                                 $email_subject, $email_message, $when, $what) {
+                                            $email_subject, $email_message, $when, $what,  $eid, $uid, $fid) {
         $('#member-invoice-form-company-name').html($company_name);
         $('#member-invoice-form-contact-name').html($contact_name);
         $('#member-invoice-form-address').html($address);
@@ -133,6 +137,13 @@
         $('#member-invoice-form-email-message').html($email_message);
         $('#member-invoice-form-when').html($when);
         $('#member-invoice-form-what').html($what);
+        $('#member-invoice-form-eid').val($eid);
+        $('#member-invoice-form-uid').val($uid);
+        $('#member-invoice-form-fid').val($fid);
+        $('#member-show-invoice-link').prop('href','./view-pdf.php?eid='+$eid+'&uid='+$uid+'&fid='+$fid);
+
+
+
     }
     function clearMemberInvoiceFormDetail() {
         $('#member-invoice-form-company-name').html("");
@@ -148,5 +159,12 @@
         $('#member-invoice-form-email-message').html("");
         $('#member-invoice-form-when').html("");
         $('#member-invoice-form-what').html("");
+        $('#member-invoice-form-eid').val("");
+        $('#member-invoice-form-fid').val("");
+        $('#member-show-invoice-link').prop('href','');
+        if ($('#remove-row-'+$('#member-invoice-form-uid').val()).val() == 1){
+            $('.'+$('#member-invoice-form-uid').val()).hide();
+        }
+        $('#member-invoice-form-uid').val("");
     }
 </script>

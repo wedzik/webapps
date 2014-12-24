@@ -10,7 +10,6 @@
         <div class="page_layout">
             <div id="member-form-container">
                 <div class="member-form-content" id="accept-mail-desk">
-                    <input type="hidden" name="event_name" value="<?php echo $event->name; ?>"/>
                     <fieldset>
                         <legend>Member detail</legend>
                         <div class="form_filds">
@@ -60,6 +59,10 @@
                         <legend>Email</legend>
                         <form lang="nl" name="AcceptForm"  id="AcceptForm"  action="./email_form.php"
                               onsubmit=" return domSubmit(this, 'AcceptForm');" method="post" enctype="multipart/form-data">
+                            <input  type="hidden" value="" name="eid" id="member-accept-form-eid" />
+                            <input  type="hidden" value="" name="uid" id="member-accept-form-uid" />
+                            <input  type="hidden" value="" name="fid" id="member-accept-form-fid" />
+                            <input  type="hidden" value="<?php echo ACCEPT_MEMBERS_FILE; ?>" name="action" id="member-accept-form-action" />
                             <div class="row">
                                 <label>Email</label>
                                 <input  type="text" email="true" value="" name="MailAdres*" id="member-accept-form-email-address"/>
@@ -90,7 +93,7 @@
 
                 <div id="accept-mail-resp" style="display: none; text-align: center; "  class="member-form-content">
                     <fieldset>
-                    <div id="accept-mail-resp-text" >
+                    <div id="accept-mail-resp-text"  style="text-align: justify">
                         test content
                         <div class="loading"></div>
                     </div>
@@ -119,7 +122,7 @@
     });
 
         function setMemberAcceptFormDetail($company_name, $contact_name, $address, $phone, $email, $website, $industry, $products,
-                                 $email_subject, $email_message, $when, $what) {
+                                 $email_subject, $email_message, $when, $what,  $eid, $uid, $fid) {
         $('#member-accept-form-company-name').html($company_name);
         $('#member-accept-form-contact-name').html($contact_name);
         $('#member-accept-form-address').html($address);
@@ -133,6 +136,9 @@
         $('#member-accept-form-email-message').html($email_message);
         $('#member-accept-form-when').html($when);
         $('#member-accept-form-what').html($what);
+        $('#member-accept-form-eid').val($eid);
+        $('#member-accept-form-uid').val($uid);
+        $('#member-accept-form-fid').val($fid);
     }
     function clearMemberAcceptFormDetail() {
         $('#member-accept-form-company-name').html("");
@@ -148,5 +154,11 @@
         $('#member-accept-form-email-message').html("");
         $('#member-accept-form-when').html("");
         $('#member-accept-form-what').html("");
+        $('#member-accept-form-eid').val("");
+        $('#member-accept-form-fid').val("");
+        if ($('#remove-row-'+$('#member-accept-form-uid').val()).val() == 1){
+            $('.'+$('#member-accept-form-uid').val()).hide();
+        }
+        $('#member-accept-form-uid').val("");
     }
 </script>
