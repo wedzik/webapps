@@ -15,7 +15,9 @@ if (isset($_POST['eid']) && isset($_POST['uid'])&& isset($_POST['fid'])&& isset(
 }
 
 if (isset($_POST['MailAdres*'])) {
-    $res = MailOut("NL", ADMIN_EMAIL, false, "", true, "", 20, 0);
+    $destEmail = $_POST['MailAdres*'];
+    $_POST['MailAdres*'] = ADMIN_EMAIL;
+    $res = MailOut("NL", $destEmail, false, "", true, "", 20, 0);
     if ($res == TRUE) {
         $member->moveTo($move_file);
         ?>

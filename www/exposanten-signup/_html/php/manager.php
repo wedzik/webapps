@@ -100,6 +100,7 @@ class Member {
     public $when = "";
     public $what = "";
     public $fileName ="";
+    public $line_number = 0;
 
     function __construct($line=""){
         if($line == ""){ return; }
@@ -266,8 +267,13 @@ class Member {
     }
 
     public function moveTo($fileSufix) {
+        $file_patch = CONFIG_MEMEBRS_PATCH.$this->fileName.MEMBERS_FILE_EXT;
+        $file=file($file_patch);
+        unset($file[$this->line_number]);
+        $fp=fopen($file_patch,"w");
+        fputs($fp,implode("",$file));
+        fclose($fp);
         $this->save($fileSufix);
-        //$destFilename = $this->event_name."_".$fileSufix.MEMBERS_FILE_EXT;
     }
 }
 
@@ -342,6 +348,9 @@ class Manager {
 
     public function showMembers($sufix){
         $files = glob(CONFIG_MEMEBRS_PATCH.'*_'.$sufix.MEMBERS_FILE_EXT);
+        if(($files === false)||(count($files)== 0)){
+            return false;
+        }
         $members = array();
         foreach($files as $file){
             $event_name =  basename($file);
@@ -349,8 +358,8 @@ class Manager {
             $event = new Event();
             $event->loadFromFile($this->_generateEventFilename($event_name));
             $members = $this->_getMembersFromFile($file, $event);
+            include INCLUDE_SCRIPTS_PATCH . "tmpl-new-members-list.php";
         }
-        include INCLUDE_SCRIPTS_PATCH . "tmpl-new-members-list.php";
     }
 
     public function getMemberByEventAndId($event_name, $id, $file_sufix){
@@ -371,12 +380,14 @@ class Manager {
     private function _getMembersFromFile($file, $event){
         $members = array();
         $lines = file($file);
+        $line_counter = 0;
         foreach($lines as $line){
             $member = new Member($line);
             if ($member->parseOk) {
 
                 $member->fileName = basename($file,MEMBERS_FILE_EXT);
                 $member->event_name = $event->name;
+                $member->line_number = $line_counter++;
                 $members[] = $member;
             }
         }

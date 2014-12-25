@@ -2,7 +2,7 @@
 ?>
 <fieldset>
     <legend><h2><?php echo $event_name; ?></h2></legend>
-    <table class="member-table" id="<?php echo $event_name; ?>_report">
+    <table class="member-table" id="<?php echo $event_name; ?>_report" style="display: none">
         <thead>
         <tr>
             <td><?php echo LABEL_COMPANY_NAME; ?></td>
@@ -13,7 +13,7 @@
         </thead>
         <tbody>
     <?php  foreach($members as $member){ ?>
-        <tr class="<?php echo $member->id; ?>">
+        <tr class="<?php echo $member->id; ?>" >
             <td><?php echo $member->company_name; ?></td>
             <td><?php echo $member->contact_name; ?></td>
             <td><?php echo $member->email; ?></td>
@@ -112,7 +112,7 @@
             $("#<?php echo $event_name; ?>_report tr:odd").addClass("odd");
             $("#<?php echo $event_name; ?>_report tr:not(.odd)").hide();
             $("#<?php echo $event_name; ?>_report tr:first-child").show();
-
+            $(".member-table").show();
             $("#<?php echo $event_name; ?>_report tr.odd").click(function(){
                 $("#<?php echo $event_name; ?>_report tr:not(.odd)").hide();
                 $("#<?php echo $event_name; ?>_report tr").removeClass('open_row_top')

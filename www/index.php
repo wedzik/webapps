@@ -68,7 +68,7 @@ a:active { text-decoration: none; color: rgb(0, 102, 255); }
         <!-- exposanten-signup begin-->
             <a rel="leanModal" href="#sign-up-window" >Show form</a>
             <?php
-                $event_name = "test2";
+                $event_name = "test1";
                 include "./exposanten-signup/form.php"
             ?>
         <!-- exposanten-signup end-->
